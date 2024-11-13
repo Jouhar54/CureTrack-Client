@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { HiOutlineLogout } from "react-icons/hi";
 import Image from "next/image";
 import LogoCureTrack from "../../../../../public/logos/Logo-CureTracK.png";
-
 import { SidebarProps, NavLinkProps } from "@/interfaces/admin";
 import { linksByRole } from "./SidebarLinks";
 

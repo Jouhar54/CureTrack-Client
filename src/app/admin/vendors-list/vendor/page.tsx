@@ -1,8 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
 
-// Mock vendors array
 const vendors = [
   {
     vendor: {
@@ -38,71 +36,78 @@ const vendors = [
   },
 ];
 
-// Status Icon Component
-const StatusIcon = ({ icon }) => <span className="flex-shrink-0">{icon}</span>;
-
 const VendorDetails = () => {
   const router = useRouter();
+  const vendor = vendors[0];
 
-  // Memoize the vendor data for optimized performance
-  const vendor = useMemo(() => vendors[0], []);
-
-  if (!vendor) return <p className="text-center text-neutral-400">Vendor not found.</p>;
-
-  const {
-    vendor: { name, initials, place, vendorType, bgColor, contact },
-    date,
-    status: { text, color, bgColor: statusBgColor, icon },
-  } = vendor;
+  if (!vendor) {
+    return <p>Vendor not found.</p>;
+  }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-neutral-900 text-neutral-200">
-      <div className="p-8 w-full max-w-lg bg-neutral-800 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold mb-6 text-center">Vendor Details</h1>
-        
-        <div className="flex items-center gap-4 mb-6">
-          <div
-            className={`w-12 h-12 flex items-center justify-center rounded-full ${bgColor} text-neutral-900 font-semibold`}
+    <div className="min-h-screen flex items-center justify-center bg-neutral-900 text-neutral-200 p-6">
+      <div className="flex max-w-4xl w-full bg-neutral-800 rounded-lg shadow-lg overflow-hidden">
+        {/* Left Side: Image */}
+        <div className="w-1/2">
+          <img
+            src="https://www.meitra.com/public/upload_file/63130c0088dcf1662192640.jpg"
+            alt="Vendor"
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        {/* Right Side: Vendor Details */}
+        <div className="w-1/2 p-8">
+          <h1 className="text-3xl font-bold mb-6">Vendor Details</h1>
+          <div className="flex items-center gap-3 mb-6">
+            <div
+              className={`w-12 h-12 flex items-center justify-center rounded-full ${vendor.vendor.bgColor} text-neutral-900 font-semibold`}
+            >
+              {vendor.vendor.initials}
+            </div>
+            <div>
+              <h2 className="text-xl font-bold">{vendor.vendor.name}</h2>
+              <p className="text-sm text-neutral-400">{vendor.vendor.vendorType}</p>
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <h3 className="font-semibold text-neutral-400">Place</h3>
+            <p>{vendor.vendor.place}</p>
+          </div>
+
+          <div className="mb-4">
+            <h3 className="font-semibold text-neutral-400">Contact</h3>
+            <p>{vendor.vendor.contact}</p>
+          </div>
+
+          <div className="mb-4">
+            <h3 className="font-semibold text-neutral-400">Requested Date</h3>
+            <p>{vendor.date}</p>
+          </div>
+
+          <div className="mb-6 flex items-center">
+            <span className="font-semibold text-neutral-400 mr-2">Status:</span>
+            <div
+              className={`flex items-center gap-1 px-2 py-1 rounded-full ${vendor.status.bgColor}`}
+            >
+              {vendor.status.icon}
+              <span className={`${vendor.status.color} font-semibold`}>
+                {vendor.status.text}
+              </span>
+            </div>
+          </div>
+
+          <button
+            className="w-full py-3 bg-emerald-500 text-white rounded-md font-semibold hover:bg-emerald-600"
+            onClick={() => router.push("/admin/vendors-list")}
           >
-            {initials}
-          </div>
-          <div>
-            <h2 className="text-xl font-bold">{name}</h2>
-            <p className="text-sm text-neutral-400">{vendorType}</p>
-          </div>
+            Back to Vendors
+          </button>
         </div>
-
-        <div className="space-y-4">
-          <DetailItem label="Place" content={place} />
-          <DetailItem label="Contact" content={contact} />
-          <DetailItem label="Requested Date" content={date} />
-        </div>
-
-        <div className="mt-6 flex items-center">
-          <span className="font-semibold text-neutral-400 mr-2">Status:</span>
-          <div className={`flex items-center gap-2 px-3 py-1 rounded-full ${statusBgColor}`}>
-            <StatusIcon icon={icon} />
-            <span className={`${color} font-semibold`}>{text}</span>
-          </div>
-        </div>
-
-        <button
-          className="w-full mt-8 py-3 bg-emerald-500 text-white rounded-md font-semibold hover:bg-emerald-600 transition duration-200"
-          onClick={() => router.push("/admin/vendors-list")}
-        >
-          Back to Vendors
-        </button>
       </div>
     </div>
   );
 };
-
-// DetailItem Component for cleaner markup
-const DetailItem = ({ label, content }) => (
-  <div>
-    <h3 className="font-semibold text-neutral-400">{label}</h3>
-    <p>{content || "N/A"}</p>
-  </div>
-);
 
 export default VendorDetails;

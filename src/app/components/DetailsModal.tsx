@@ -63,6 +63,7 @@ export default function DetailsModal({ id, isOpen, onClose }: DetailsModalProps)
       onClose();
     } catch (err) {
       setError('Error rejecting request');
+      console.log(err);
     } finally {
       setLoading(false);
     }
